@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import { UserController } from "../controllers/UserController";
 
 const router: Router = express.Router();
-const userController = new UserController();
+const userController: UserController = new UserController();
 const { createUser, getUser, activateUser, updateUser, deleteUser } = userController;
 
 router.get("/", (req, res) => {

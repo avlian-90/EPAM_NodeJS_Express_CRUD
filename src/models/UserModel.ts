@@ -3,11 +3,11 @@ import path from "path";
 import { User } from "../types/types";
 import { isUserValid } from "../validation/UserValidation";
 
-const dataFilePath = path.resolve("data/users.json");
+const dataFilePath: string = path.resolve("data/users.json");
 
 export class UserModel {
 
-    createUser = (userData: any) => {
+    createUser = (userData: User) => {
         const {name, age, gender} = userData;
 
         const {errorMessage, isValid} = isUserValid(name, age, gender);
@@ -27,7 +27,7 @@ export class UserModel {
         
             let users: Array<User> = [];
         
-            const data = fs.readFileSync(dataFilePath, "utf-8");
+            const data: string = fs.readFileSync(dataFilePath, "utf-8");
         
             if (data) {
                 users = JSON.parse(data);
@@ -41,20 +41,20 @@ export class UserModel {
   
     getUser = (userId: string) => {
 
-        const data = fs.readFileSync(dataFilePath, "utf-8");
+        const data: string = fs.readFileSync(dataFilePath, "utf-8");
         const users: Array<User> = JSON.parse(data);
     
-        const requestedUser = users.find(user => user.id === +userId);
+        const requestedUser: User | undefined = users.find(user => user.id === +userId);
     
         return requestedUser;
     };
   
     activateUser = (userId: string) => {
-        const data = fs.readFileSync(dataFilePath, "utf-8");
+        const data: string = fs.readFileSync(dataFilePath, "utf-8");
         const users: Array<User> = JSON.parse(data);
     
-        const index = users.findIndex((user) => user.id === +userId);
-        const requestedUser = users[index];
+        const index: number = users.findIndex((user) => user.id === +userId);
+        const requestedUser: User = users[index];
 
         if (!requestedUser) {
             return null;
@@ -67,19 +67,19 @@ export class UserModel {
 
     };
   
-    updateUser = (userId: string, userData: any) => {
+    updateUser = (userId: string, userData: User) => {
         
-        const {name, age, gender} = userData;
+        const { name, age, gender } = userData;
     
-        const {errorMessage, isValid} = isUserValid(name, age, gender);
+        const { errorMessage, isValid } = isUserValid(name, age, gender);
     
         if (!isValid) {
             return errorMessage;
         } else {
-            const data = fs.readFileSync(dataFilePath, 'utf-8');
+            const data: string = fs.readFileSync(dataFilePath, 'utf-8');
             const users: Array<User> = JSON.parse(data);
         
-            const index = users.findIndex((user) => user.id === +userId);
+            const index: number = users.findIndex((user) => user.id === +userId);
           
             if (index === -1) {
               return null;
@@ -97,10 +97,11 @@ export class UserModel {
     };
   
     deleteUser = (userId: string) => {
-        const data = fs.readFileSync(dataFilePath, "utf-8");
+
+        const data: string = fs.readFileSync(dataFilePath, "utf-8");
         const users: Array<User> = JSON.parse(data);
     
-        const filteredUsers = users.filter(user => user.id !== +userId);
+        const filteredUsers: User[] = users.filter(user => user.id !== +userId);
 
         return filteredUsers;
     };

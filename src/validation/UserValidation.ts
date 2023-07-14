@@ -1,6 +1,7 @@
 export const isUserValid = (name: string, age: number, gender: string) => {
-    let errorMessage = "";
-    let isValid = true;
+    
+    let errorMessage: string = "";
+    let isValid: boolean = true;
 
     if (!name || !age || !gender) {
         errorMessage = "Name, age, and gender are required fields!"
