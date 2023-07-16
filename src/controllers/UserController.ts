@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserModel } from "../models/UserModel";
+import { UserService } from "../service/UserService";
 import fs from "fs";
 import path from "path";
 import { User } from "../types/types";
@@ -7,14 +7,14 @@ import { User } from "../types/types";
 const dataFilePath = path.resolve("data/users.json");
 
 export class UserController {
-  private userModel: UserModel;
+  private userService: UserService;
 
   constructor() {
-    this.userModel = new UserModel();
+    this.userService = new UserService();
   }
 
   createUser = (req: Request, res: Response) => {
-    const returnedVal: string | User[] = this.userModel.createUser(req.body);
+    const returnedVal: string | User[] = this.userService.createUser(req.body);
 
     if (typeof returnedVal === "string") {
         res.status(400).send(returnedVal);
@@ -28,7 +28,7 @@ export class UserController {
   };
 
   getUser = (req: Request, res: Response) => {
-    const requestedUser: User | undefined = this.userModel.getUser(req.params.id);
+    const requestedUser: User | undefined = this.userService.getUser(req.params.id);
 
     if (!requestedUser) {
         res.status(404).send("User not found!");
@@ -38,7 +38,7 @@ export class UserController {
   };
 
   activateUser = (req: Request, res: Response) => {
-    const users: User[] | null = this.userModel.activateUser(req.params.id);
+    const users: User[] | null = this.userService.activateUser(req.params.id);
 
     if (!users) {
         res.status(404).send("User not found!");
@@ -51,7 +51,7 @@ export class UserController {
   };
 
   updateUser = (req: Request, res: Response) => {
-    const returnedVal: string | User[] | null = this.userModel.updateUser(req.params.id, req.body);
+    const returnedVal: string | User[] | null = this.userService.updateUser(req.params.id, req.body);
 
     if (!returnedVal) {
         res.status(404).send("User not found!");
@@ -65,7 +65,7 @@ export class UserController {
   };
 
   deleteUser = (req: Request, res: Response) => {
-    const filteredUsers: User[] = this.userModel.deleteUser(req.params.id);
+    const filteredUsers: User[] = this.userService.deleteUser(req.params.id);
 
     fs.promises.writeFile(dataFilePath, JSON.stringify(filteredUsers, undefined, 2)).then(() => {
         res.send("User is deleted!");

@@ -5,7 +5,7 @@ import { isUserValid } from "../validation/UserValidation";
 
 const dataFilePath: string = path.resolve("data/users.json");
 
-export class UserModel {
+export class UserService {
 
     createUser = (userData: User) => {
         const {name, age, gender} = userData;
